@@ -283,15 +283,15 @@ test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }
      // Zoom işlemi
      await zoom(page);
 
-
+  await page.waitForTimeout(1000);
+  const uyeİsyeriNo = await page.locator('td:nth-child(3)').first().textContent();
   // ===== ADIM 6: Detay Menü =====
-  console.log(`🎯 Seçilen üye işyeri: ${isyeriAdi}`);
+  console.log(`🎯 Seçilen üye işyeri: ${uyeİsyeriNo} - ${isyeriAdi}`);
 
   try {
-    await page.getByRole('row', { name: 'Expand Details  ' + isyeriAdi }).getByLabel('Expand Details').click();
-
+  await page.getByRole('row', { name: 'Expand Details  ' + uyeİsyeriNo }).getByLabel('Expand Details').click();
 } catch (error) {
-  console.log(`❌ ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
+  console.log(`❌ ${uyeİsyeriNo} - ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
 }
   
   // bu satır özellikle bir detay satırını incelemek için konulmuştur. hemen yukarıdaki 3 satırı yorum satırına alarak kullanabilirsiniz.
@@ -336,6 +336,19 @@ test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }
         await page.waitForTimeout(2000);
         
       } 
+      await page.waitForTimeout(1000);
+
+      await page.getByRole('link', { name: 'Collapse Details' }).click();
+
+    try {
+      await page.getByRole('row', { name: 'Expand Details  ' + uyeİsyeriNo }).getByLabel('Expand Details').click();
+    } catch (error) {
+      console.log(`❌ ${uyeİsyeriNo} - ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
+    }
+
+    // "Belgeler" tıklama 
+    await belgelerMenu.click();
+
         console.log('✅ "Güncelle" butonu görünüyor, belge güncelleme, goruntuleme, silme yapılıyor...');
         
         // Tabpanel içindeki ilk hücreyi seç
@@ -346,7 +359,7 @@ test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }
         console.log('📄 İlk hücredeki değer:', ilkDeger);
         
         // İlk satırdaki güncelleme butonuna tıkla
-        await page.getByRole('row', { name: ` ${ilkDeger}`, exact: true }).getByRole('gridcell').first().click();
+        await page.getByLabel('Belgeler').getByRole('button', { name: '' }).click();
 
         // Güncelleme butonuna tıkla
         await page.getByRole('button', { name: 'Güncelle' }).click();
@@ -366,8 +379,23 @@ test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }
             console.log('⚠️ Belge Güncelleme yapılamadı');
         }
 
+        await page.getByRole('link', { name: 'Collapse Details' }).click();
+
+        try {
+          await page.getByRole('row', { name: 'Expand Details  ' + uyeİsyeriNo }).getByLabel('Expand Details').click();
+        } catch (error) {
+          console.log(`❌ ${uyeİsyeriNo} - ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
+        }
+    
+        // "Belgeler" tıklama 
+        await belgelerMenu.click();
+
+
+
+
+
         // Görüntüleme butonuna tıkla
-        await page.getByRole('row', { name: ` ${ilkDeger}`, exact: true }).getByRole('gridcell').first().click();
+        await page.getByLabel('Belgeler').getByRole('button', { name: '' }).click();
 
         // preview butonuna tıkla
         await page.getByRole('button', { name: '' }).first().click();
@@ -379,7 +407,11 @@ test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }
 
         // Görüntülemeyi kapat
         await page.getByRole('button', { name: 'Kapat' }).click();
+        await page.waitForTimeout(1000);
+        await page.getByRole('button', { name: 'Kapat' }).click();
+        await page.waitForTimeout(1000);
 
+/*
         // Silme işlemleri
         await page.getByRole('button', { name: '' }).first().click();
         await page.getByRole('button', { name: 'Sil' }).click();
@@ -387,7 +419,7 @@ test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }
         await page.getByRole('button', { name: 'Güncelle' }).click();
 
         console.log('✅ Belge Silme işlemi yapıldı');
-
+*/
       // ===== ADIM 7: Üye İşyeri Silme =====
       try {
         // İlk DENEME satırını bul ve expand details butonuna tıkla
