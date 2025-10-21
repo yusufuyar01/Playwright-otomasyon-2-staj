@@ -282,9 +282,10 @@ test('Detay Merchant IBANs', async ({ page }) => {
       // Zoom işlemi
       await zoom(page);
 
-
+  await page.waitForTimeout(1000);
+  const uyeİsyeriNo = await page.locator('td:nth-child(3)').first().textContent();
   // ===== ADIM 5: Detay Menü =====
-  const firstRowExpand = await page.getByRole('row', { name: 'Expand Details  ' + ad }).getByLabel('Expand Details');
+  const firstRowExpand = await page.getByRole('row', { name: 'Expand Details  ' + uyeİsyeriNo }).getByLabel('Expand Details');
   await firstRowExpand.click();
 
   await page.getByText('Merchant Ibans').click();
