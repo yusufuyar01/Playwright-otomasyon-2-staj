@@ -35,6 +35,7 @@ test('Cihazları Bayiye Atama (checkbox işaretli)', async ({ page }) => {
   try {
     const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
     const pavdenemeCount = await pavdenemeRows.count();
+    await page.waitForTimeout(1000);
     
     if (pavdenemeCount > 0) {
       // Ana Bayi sütunu boş olan PAVDENEME cihazlarını filtrele
