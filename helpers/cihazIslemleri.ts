@@ -159,6 +159,7 @@ export async function cihazSil(page: Page): Promise<void> {
       const basariMesaji = await page.getByText('Başarılı The Device has been successfully deleted');
       await expect(basariMesaji).toBeVisible();
       console.log('✅ 1 Cihaz başarıyla silindi');
+      await basariMesaji.click();
     } catch (error) {
       console.log('❌ Cihazın satış kaydı bulunmaktadır. Bu cihaz silinemez.');
     }
