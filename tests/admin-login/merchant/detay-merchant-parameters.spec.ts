@@ -282,9 +282,11 @@ test('Detay Merchant Parameters', async ({ page }) => {
        await zoom(page);
  
  
+   await page.waitForTimeout(1000);
+ 
+   const uyeIsyeriNo = await page.locator('td:nth-child(3)').first().textContent();
    // ===== ADIM 5: Detay Menü =====
-   const firstRowExpand = await page.getByRole('row', { name: 'Expand Details  ' + ad }).getByLabel('Expand Details');
-   await firstRowExpand.click();
+   const firstRowExpand = await page.getByRole('row', { name: 'Expand Details  ' + uyeIsyeriNo }).getByLabel('Expand Details');       await firstRowExpand.click();
  
    await page.getByText('Merchant Parameters').click();
    await page.waitForTimeout(1000);
