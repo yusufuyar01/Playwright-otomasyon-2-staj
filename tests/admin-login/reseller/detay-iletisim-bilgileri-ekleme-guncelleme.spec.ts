@@ -126,8 +126,8 @@ test('Detay İletişim Bilgileri Ekleme ve Güncelleme', async ({ page }) => {
     try {
       const basariMesaji = page.getByText('Başarılı Bayi İletişim başarı');
       await basariMesaji.waitFor({ timeout: 5000 });
-      await basariMesaji.click();
       console.log('✅ Başarılı: İletişim bilgisi başarıyla eklendi!');
+      await basariMesaji.click();
     } catch (error) {
       console.log('❌ İletişim bilgisi ekleme başarı mesajı kontrol edilirken hata oluştu:', error.message);
     }
@@ -174,8 +174,8 @@ test('Detay İletişim Bilgileri Ekleme ve Güncelleme', async ({ page }) => {
       try {
         const basariMesaji = page.getByText('Başarılı Bayi İletişim başarı');
         await basariMesaji.waitFor({ timeout: 5000 });
-        await basariMesaji.click();
         console.log('✅ Başarılı: İletişim bilgisi başarıyla güncellendi!');
+        await basariMesaji.click();
       } catch (error) {
         console.log('❌ İletişim bilgisi güncelleme başarı mesajı kontrol edilirken hata oluştu:', error.message);
       }
