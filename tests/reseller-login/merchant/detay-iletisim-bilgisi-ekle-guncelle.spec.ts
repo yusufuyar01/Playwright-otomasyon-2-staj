@@ -244,15 +244,15 @@ test('Detay iletişim bilgisi ekleme ve güncelleme (reseller-login)', async ({ 
      // Zoom işlemi
      await zoom(page);
 
-
+  const uyeIsyeriNo = await page.locator('td:nth-child(3)').first().textContent();
   // ===== ADIM 6: Detay Menü =====
-  console.log(`🎯 Seçilen üye işyeri: ${isyeriAdi}`);
+  console.log(`🎯 Seçilen üye işyeri: ${uyeIsyeriNo} - ${isyeriAdi}`);
 
   try {
-    await page.getByRole('row', { name: 'Expand Details  ' + isyeriAdi }).getByLabel('Expand Details').click();
+    await page.getByRole('row', { name: 'Expand Details  ' + uyeIsyeriNo }).getByLabel('Expand Details').click();
 
 } catch (error) {
-  console.log(`❌ ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
+  console.log(`❌ ${uyeIsyeriNo} - ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
 }
   
   // bu satır özellikle bir detay satırını incelemek için konulmuştur. hemen yukarıdaki 3 satırı yorum satırına alarak kullanabilirsiniz.
