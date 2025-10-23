@@ -16,7 +16,7 @@ test('BKM TechPOS - Banka PF İşlem Listesi', async ({ page }) => {
     });
     console.log(`📅 Bugünün tarihi: ${tarihString}`);
 
-    // 15 gün öncesinin tarihini konsola yazdır
+    // 60 gün öncesinin tarihini konsola yazdır
     const altmısırgunOncesi = new Date();
     altmısırgunOncesi.setDate(bugun.getDate() - 60);
     const altmısırgunOncesiString = altmısırgunOncesi.toLocaleDateString('tr-TR', {
@@ -26,6 +26,24 @@ test('BKM TechPOS - Banka PF İşlem Listesi', async ({ page }) => {
         weekday: 'long'
     });
     console.log(`📅 60 gün öncesi: ${altmısırgunOncesiString}`);
+
+    // Ay numarasını ay adına çeviren fonksiyon
+    const ayAdiGetirTam = (ayNumarasi: number): string => {
+        const aylar = [
+            'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+            'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+        ];
+        return aylar[ayNumarasi - 1];
+    };
+    
+    // Gün numarasını gün adına çeviren fonksiyon
+    const gunAdiGetir = (gunNumarasi: number): string => {
+        const gunler = [
+            'Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 
+            'Perşembe', 'Cuma', 'Cumartesi'
+        ];
+        return gunler[gunNumarasi];
+    };  
 
     await login(page);
     
@@ -59,10 +77,44 @@ test('BKM TechPOS - Banka PF İşlem Listesi', async ({ page }) => {
     // Tarih seçimi - GG.AA.YYYY formatında (numara olarak)
     console.log(`🔍  2 Ay Çncesi Seçildi`);
 
-    await page.locator('#datepicker-1').fill(gun.toString());
-    await page.locator('#datepicker-1').fill(ay.toString());
-    await page.locator('#datepicker-1').fill(altmısırgunOncesi.getFullYear().toString());
-
+    const tarih = gun.toString() + ay.toString() + yıl.toString();
+    if (gun.toString() !== '31') {
+    const gunStr = ['3','4','5','6','7','8','9'].includes(gun.toString()) ? '0' + gun.toString() : gun.toString();
+    const tarih = gunStr + ay.toString() + yıl.toString();
+    }
+    
+    if (['1','3','5','7','8','10','12'].includes(ay.toString())) {
+     await page.locator('#datepicker-1').click();
+     for (let i = 0; i < yıl.toString().length; i++) {
+     await page.locator('#datepicker-1').press(yıl.toString()[i]);
+     await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
+     }
+     await page.locator('#datepicker-1').press('ArrowLeft');
+     for (let i = 0; i < ay.toString().length; i++) {
+         await page.locator('#datepicker-1').press(ay.toString()[i]);
+         await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
+     }
+     await page.locator('#datepicker-1').press('ArrowLeft');
+     await page.locator('#datepicker-1').press('ArrowLeft');
+     for (let i = 0; i < gun.toString().length; i++) {
+         await page.locator('#datepicker-1').press(gun.toString()[i]);
+         await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
+     }
+    } else {
+        // Tarih string'ini karakterlerine ayır ve her birini ayrı ayrı bas
+    for (let i = 0; i < tarih.length; i++) {
+     await page.locator('#datepicker-1').press(tarih[i]);
+     await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
+     }   
+     }
+     
+     // Gün adını al
+     const gunAdi = gunAdiGetir(altmısırgunOncesi.getDay());
+     await page.waitForTimeout(1000);
+ 
+     // Tarih seçimi
+     const titleText = `${gun} ${ayAdiGetirTam(ay)} ${altmısırgunOncesi.getFullYear()} ${gunAdi}`;
+     console.log(`🔍 Seçilecek başlangıç tarihi: "${titleText}"`);
     await page.waitForTimeout(1000);
 
     // Filtrele butonuna tıkla
