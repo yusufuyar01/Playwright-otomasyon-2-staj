@@ -30,14 +30,15 @@ test('Detay kullanıcıları gruba ekle ve çıkar (reseller login)', async ({ p
   // ===== ADIM 3: Üye İşyeri Ekleme =====
   const isyeriAdi = await uyeIsyeriEkle507Tuzel(page);
 
+  const uyeIsyeriNo = await page.locator('td:nth-child(3)').first().textContent();
 // ===== ADIM 4: Detay Menü =====
-  console.log(`🎯 Seçilen üye işyeri: ${isyeriAdi}`);
+  console.log(`🎯 Seçilen üye işyeri: ${uyeIsyeriNo} - ${isyeriAdi}`);
 
   try {
-    await page.getByRole('row', { name: 'Expand Details  ' + isyeriAdi }).getByLabel('Expand Details').click();
+    await page.getByRole('row', { name: 'Expand Details  ' + uyeIsyeriNo }).getByLabel('Expand Details').click();
 
 } catch (error) {
-  console.log(`❌ ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
+  console.log(`❌ ${uyeIsyeriNo} - ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
 }
   
   // bu satır özellikle bir detay satırını incelemek için konulmuştur. hemen yukarıdaki 3 satırı yorum satırına alarak kullanabilirsiniz.
@@ -81,6 +82,7 @@ test('Detay kullanıcıları gruba ekle ve çıkar (reseller login)', async ({ p
   await page.getByRole('option', { name: isyeriAdi }).nth(1).click();
   await page.getByRole('option', { name: isyeriAdi }).nth(2).click();
   await page.getByRole('heading', { name: 'Üye İşyeri Kullanıcısı Gü' }).click();
+  await page.getByRole('combobox').filter({ hasText: /^$/ }).press('Tab');
   await page.getByRole('button', { name: 'Güncelle' }).click();
 
   try {
@@ -104,7 +106,8 @@ test('Detay kullanıcıları gruba ekle ve çıkar (reseller login)', async ({ p
   await page.getByRole('combobox').filter({ hasText: /^$/ }).click();
   await page.getByRole('combobox').filter({ hasText: /^$/ }).press('Backspace');
   await page.getByRole('combobox').filter({ hasText: /^$/ }).press('Backspace');
-  await page.getByText('Aktif', { exact: true }).click();
+  await page.getByRole('option').first().click();
+  await page.getByRole('combobox').filter({ hasText: /^$/ }).press('Tab');
   await page.getByRole('button', { name: 'Güncelle' }).click();
 
   try {
