@@ -245,12 +245,12 @@ test('507 Gerçek Mükellef Ekleme (reseller-login)', async ({ page }) => {
       // Zoom işlemi
       await zoom(page);
 
-
+    const uyeIsyeriNo = await page.locator('td:nth-child(3)').first().textContent();
     // ===== ADIM 6: Detay Menü =====
-    console.log(`🎯 Seçilen üye işyeri: ${ad}`);
+    console.log(`🎯 Seçilen üye işyeri: ${uyeIsyeriNo} - ${ad}`);
 
     try {
-      await page.getByRole('row', { name: 'Expand Details  ' + ad }).getByLabel('Expand Details').click();
+      await page.getByRole('row', { name: 'Expand Details  ' + uyeIsyeriNo }).getByLabel('Expand Details').click();
 
     } catch (error) {
       console.log(`❌ ${ad} ile başlayan üye işyeri bulunamadı:`, error.message);
