@@ -59,7 +59,7 @@ test('TechPOS - Seri No Grid Filtre', async ({ page }) => {
     await page.waitForTimeout(1000);
    
     await page.locator('ot-data-entry-template').filter({ hasText: 'Bitiş Tarihi' }).getByLabel('Takvimden seç').click();
-    await page.getByTitle('1 Ağustos 2025 Cuma').locator('span').click();
+    await page.getByRole('button', { name: 'Bugün' }).click();
 
     // Filtrele butonu
     await page.getByRole('button', { name: 'Filtrele' }).click();
