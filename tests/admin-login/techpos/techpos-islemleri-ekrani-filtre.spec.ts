@@ -103,7 +103,7 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     // Üye işyeri doldur
     await page.locator('ot-data-entry-template').filter({ hasText: 'Üye İşyeri' }).getByRole('combobox').click();
     await page.locator('ot-data-entry-template').filter({ hasText: 'Üye İşyeri' }).getByRole('combobox').fill('erdal');
-    await page.getByText('Erdal Bakkal-').click();
+    await page.getByText('Erdal Bakkal').click();
 
 
     // Filtrele butonuna tıkla
