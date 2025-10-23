@@ -18,7 +18,7 @@ test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
 
     // 20 gün öncesinin tarihini konsola yazdır
     const yirmiGunOncesi = new Date();
-    yirmiGunOncesi.setDate(bugun.getDate() - 25);
+    yirmiGunOncesi.setDate(bugun.getDate() - 20);
     const yirmiGunOncesiString = yirmiGunOncesi.toLocaleDateString('tr-TR', {
         year: 'numeric',
         month: 'long',
