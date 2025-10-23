@@ -31,14 +31,15 @@ test('Detay kullanıcı ekle ve güncelle mail at (reseller login)', async ({ pa
   const isyeriAdi = await uyeIsyeriEkle507Tuzel(page);
 
 
+  const uyeIsyeriNo = await page.locator('td:nth-child(3)').first().textContent();
   // ===== ADIM 4: Detay Menü =====
-  console.log(`🎯 Seçilen üye işyeri: ${isyeriAdi}`);
+  console.log(`🎯 Seçilen üye işyeri: ${uyeIsyeriNo} - ${isyeriAdi}`);
 
   try {
-    await page.getByRole('row', { name: 'Expand Details  ' + isyeriAdi }).getByLabel('Expand Details').click();
+    await page.getByRole('row', { name: 'Expand Details  ' + uyeIsyeriNo }).getByLabel('Expand Details').click();
 
 } catch (error) {
-  console.log(`❌ ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
+  console.log(`❌ ${uyeIsyeriNo} - ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
 }
   
   // bu satır özellikle bir detay satırını incelemek için konulmuştur. hemen yukarıdaki 3 satırı yorum satırına alarak kullanabilirsiniz.
@@ -78,6 +79,9 @@ test('Detay kullanıcı ekle ve güncelle mail at (reseller login)', async ({ pa
 
   // ===== ADIM 6: Kullanıcı Güncelleme =====
   await page.getByLabel('Kullanıcılar').getByRole('button', { name: '' }).nth(1).click();
+  await page.getByRole('combobox').filter({ hasText: /^$/ }).click();
+  await page.getByRole('option').first().click();
+  await page.getByRole('combobox').filter({ hasText: /^$/ }).press('Tab');
   await page.getByRole('button', { name: 'Güncelle' }).click();
 
   try {
